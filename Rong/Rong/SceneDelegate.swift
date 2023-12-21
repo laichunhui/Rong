@@ -11,8 +11,6 @@ import ComposableArchitecture
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    lazy var viewStore = ViewStore(store.stateless)
-
     var window: UIWindow?
 
     func scene(
@@ -31,15 +29,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillResignActive(_: UIScene) {
-        viewStore.send(.appDelegate(.appDidEnterBackground))
+        store.send(.appDelegate(.appDidEnterBackground))
     }
 
     func sceneDidDisconnect(_: UIScene) {
-        viewStore.send(.appDelegate(.appWillTerminate))
+        store.send(.appDelegate(.appWillTerminate))
     }
 
     func sceneDidEnterBackground(_: UIScene) {
-        viewStore.send(.appDelegate(.appDidEnterBackground))
+        store.send(.appDelegate(.appDidEnterBackground))
     }
 }
 #endif

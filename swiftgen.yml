@@ -1,0 +1,40 @@
+# output_dir: GameSpace/Generated
+
+# strings:
+#   inputs: Resources/Base.lproj
+#   outputs:
+#     - templateName: structured-swift5
+#       output: Generated/Strings.swift
+#fonts:
+#  inputs: Packages/Sources/Resources/Font
+#  outputs:
+#    templateName: swift5
+#    output: Packages/Sources/Resources/Generated/Fonts.swift
+    
+xcassets:
+  inputs:
+    - Packages/Sources/Resources/Image/Assets.xcassets
+    # - Packages/Sources/Resources/Colors.xcassets
+  outputs:
+    - templateName: swift5
+      output: Packages/Sources/Resources/Generated/Assets.swift
+
+files:
+  inputs: Packages/Sources/Resources/Image/Webp
+  filter: .+\.webp$
+  outputs:
+    templateName: structured-swift5
+    output: Packages/Sources/Resources/Generated/Files.swift
+    
+strings:
+  inputs: Packages/Sources/Resources/en.lproj
+  outputs:
+    templateName: structured-swift5
+    output: Packages/Sources/Resources/Generated/en_Strings.swift
+    
+strings:
+  inputs: Packages/Sources/Resources/zh-Hans.lproj
+  outputs:
+    templateName: structured-swift5
+    output: Packages/Sources/Resources/Generated/zh-Hans_Strings.swift
+

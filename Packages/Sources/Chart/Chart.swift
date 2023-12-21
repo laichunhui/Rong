@@ -26,7 +26,7 @@ public struct ChartView: View {
             self.isLoading = state.isLoading
         }
     }
-
+    
     public var body: some View {
         WithViewStore(
             store,

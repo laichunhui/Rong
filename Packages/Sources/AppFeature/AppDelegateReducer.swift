@@ -15,7 +15,7 @@ import Utilities
 
 // MARK: - AppDelegateReducer
 
-public struct AppDelegateReducer: ReducerProtocol {
+public struct AppDelegateReducer: Reducer {
     public typealias State = UserSettings
 
     public enum Action: Equatable {
@@ -25,7 +25,7 @@ public struct AppDelegateReducer: ReducerProtocol {
         case userSettingsLoaded(Loadable<UserSettings>)
     }
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce(self.core)
     }
 
@@ -42,7 +42,7 @@ public struct AppDelegateReducer: ReducerProtocol {
 }
 
 extension AppDelegateReducer {
-    func core(state: inout State, action: Action) -> EffectTask<Action> {
+    func core(state: inout State, action: Action) -> Effect<Action> {
         switch action {
         case .appDidFinishLaunching:
             return .run { send in

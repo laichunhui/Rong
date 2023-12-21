@@ -12,9 +12,9 @@ import SwiftUI
 // MARK: - StackNavigation
 
 public struct StackNavigation<Buttons: View, Content: View>: View {
-    let title: String?
-    var content: () -> Content
-    var buttons: (() -> Buttons)?
+    public let title: String?
+    public var content: () -> Content
+    public var buttons: (() -> Buttons)?
 
     @StateObject
     var stack = StackNavigationObservable()
@@ -31,7 +31,7 @@ public struct StackNavigation<Buttons: View, Content: View>: View {
 
     public var body: some View {
         #if os(iOS)
-        NavigationView {
+        NavigationStack {
             content()
                 .navigationTitle(title ?? "")
                 .toolbar {

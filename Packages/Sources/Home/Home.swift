@@ -10,6 +10,7 @@ import SharedModels
 import SwiftUI
 import Utilities
 import ViewComponents
+import SFSafeSymbols
 
 // MARK: - HomeView
 
@@ -24,60 +25,95 @@ public struct HomeView: View {
     }
     
     private struct ViewState: Equatable {
-        let isLoading: Bool
-        
+        var aimList: [AimModel]
+        var isLoading: Bool
         init(_ state: HomeReducer.State) {
+            self.aimList = state.aimList
             self.isLoading = state.isLoading
         }
     }
     
     public var body: some View {
-        WithViewStore(
-            store,
-            observe: ViewState.init
-        ) { viewStore in
-            ZStack {
-                ScrollView(.vertical, showsIndicators: false) {
-                    ExtraTopSafeAreaInset()
-                    
-                    editHeaderView()
-                    
-                    LazyVStack(spacing: 24) {
-                        aimItemsRepresentable(
-                            title: "Last Watched",
-                            isLoading: viewStore.isLoading,
-                            store: store.scope(
-                                state: \.aimList
-                            )
-                        )
-                    }
-                    .placeholder(
-                        active: viewStore.isLoading,
-                        duration: 2.0
-                    )
-                    
-                    ExtraBottomSafeAreaInset()
-                    Spacer(minLength: 32)
-                }
+        NavigationStackStore(self.store.scope(state: \.path, action: { .path($0) })) {
+            NavigationLink(state: Router.State.calculator(CalculatorReducer.State())) {
+              Text("Push feature")
             }
-            .transition(.opacity)
-            .animation(
-                .easeInOut(duration: 0.5),
-                value: viewStore.isLoading
-            )
-            .disabled(viewStore.isLoading)
-            .onAppear {
-                viewStore.send(.onAppear)
+        } destination: { store in
+            Form {
+              Section {
+                NavigationLink(state: CalculatorReducer.State()) {
+                  Text("Push feature")
+                }
+              }
             }
         }
-        .frame(
-            maxWidth: .infinity,
-            maxHeight: .infinity
-        )
-//#if os(iOS)
-//        .ignoresSafeArea(.container, edges: DeviceUtil.isPhone ? .top : [])
-//#endif
-        .background(backgroundView)
+
+//            WithViewStore(
+//                store,
+//                observe: ViewState.init
+//            ) { viewStore in
+//                StackNavigation(title: "Path Of Free") {
+//                    ZStack {
+//                        ScrollView(.vertical, showsIndicators: false) {
+//                            ExtraTopSafeAreaInset()
+//                            
+//                            editHeaderView
+//                            
+//                            LazyVStack(spacing: 24) {
+//                                aimItemsRepresentable(title: "Last Watched", items: viewStore.aimList)
+//                            }
+//                            .placeholder(
+//                                active: viewStore.isLoading,
+//                                duration: 2.0
+//                            )
+//                            
+//                            ExtraBottomSafeAreaInset()
+//                            Spacer(minLength: 32)
+//                        }
+//                    }
+//                    .transition(.opacity)
+//                    .animation(
+//                        .easeInOut(duration: 0.5),
+//                        value: viewStore.isLoading
+//                    )
+//                    .disabled(viewStore.isLoading)
+//                    .onAppear {
+//                        viewStore.send(.onAppear)
+//                    }
+//                }
+//            buttons: {
+//                //                NavigationLink(value: 1) {
+//                //                    Image(systemSymbol: .keyboardOnehandedRight)
+//                //                        .foregroundColor(.white)
+//                //                        .font(.title3.bold())
+//                //                        .contentShape(Rectangle())
+//                //                }
+//                Button {
+//                    store.send(.onCalculatorTapped)
+//                    //                    NavigationLink("Calculator") {
+//                    //                        CalculatorView(store: .init(initialState: .init(), reducer: { CalculatorReducer() }))
+//                    //                    }
+//                } label: {
+//                    Image(systemSymbol: .keyboardOnehandedRight)
+//                        .foregroundColor(.white)
+//                        .font(.title3.bold())
+//                        .contentShape(Rectangle())
+//                }
+//                .buttonStyle(.plain)
+//            }
+//            .frame(
+//                maxWidth: .infinity,
+//                maxHeight: .infinity
+//            )
+//            .background(backgroundView)
+//                //            .navigationDestination(
+//                //              store: self.store.scope(
+//                //                state: \.$navigationDestination, action: { .navigationDestination($0) })
+//                //            ) {
+//                //              DestinationView(store: $0)
+//                //            }
+//            }
+        
     }
 }
 
@@ -110,13 +146,12 @@ extension HomeView {
 
 // MARK: - Aims View
 extension HomeView {
-    private func editHeaderView() -> some View {
-        WithViewStore(store) { viewStore in
+    private var editHeaderView: some View {
+        WithViewStore(store, observe: { $0 }) { viewStore in
             HStack(alignment: .lastTextBaseline, spacing: 20) {
                 TextField(
                     "Wealth",
-                    text: viewStore.binding(
-                        get: \.wealth, send: HomeReducer.Action.wealthTextChanged)
+                    text: viewStore.binding(get: \.wealth, send: HomeReducer.Action.wealthTextChanged)
                 )
                 .keyboardType(.numbersAndPunctuation)
                 .font(Font.system(size: 36))
@@ -125,7 +160,7 @@ extension HomeView {
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .submitLabel(.done)
-    //            .focused($isEditing)
+                //            .focused($isEditing)
                 
                 TextField(
                     "Rise",
@@ -139,7 +174,7 @@ extension HomeView {
                 .disableAutocorrection(true)
                 .keyboardType(.numbersAndPunctuation)
                 .submitLabel(.done)
-    //            .focused($isEditing)
+                //            .focused($isEditing)
             }
             .listRowBackground(Color.clear)
             .padding(.all, 18)
@@ -149,31 +184,41 @@ extension HomeView {
     @ViewBuilder
     func aimItemsRepresentable(
         title: String,
-        isLoading: Bool,
-        store: Store<Loadable<[AimModel]>, HomeReducer.Action>
+        items: [AimModel]
     ) -> some View {
-        WithViewStore(store) { state in
-            state
-        } content: { viewStore in
-            if let items = viewStore.value,
-               !items.isEmpty {
-                ForEach(items) { model in
-                    HStack(alignment: .center) {
-                        Text(model.date.standardDateFormatString)
-                            .foregroundColor(.white)
-                            .font(Font.system(size: 16))
-                        Spacer()
-                        Text(String(format: "%0.0f", model.value))
-                            .foregroundColor(Color.gold)
-                            .font(Font.system(size: 16, weight: Font.Weight.bold))
-                            .shimmering()
-                    }
-                    .contentShape(Rectangle())
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .listRowBackground(Color.clear)
-                    .padding(.all, 16)
+        if !items.isEmpty {
+            ForEach(items) { model in
+                HStack(alignment: .center) {
+                    Text(model.date.standardDateFormatString)
+                        .foregroundColor(.white)
+                        .font(Font.system(size: 16))
+                    Spacer()
+                    Text(String(format: "%0.0f", model.value))
+                        .foregroundColor(Color.yellow)
+                        .font(Font.system(size: 16, weight: Font.Weight.bold))
+                        .shimmering()
                 }
+                .contentShape(Rectangle())
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .listRowBackground(Color.clear)
+                .padding(.all, 16)
             }
         }
     }
+}
+
+
+private struct DestinationView: View {
+  let store: StoreOf<EmptyReducer<String, Never>>
+  var body: some View {
+      WithViewStore(store, observe: { $0 }) { viewStore in
+          switch viewStore.state {
+          case NavigationRoutes.calculator:
+              CalculatorView(store: .init(initialState: .init(), reducer: { CalculatorReducer() }))
+          default:
+              Text("empty Destination")
+          }
+      }
+    
+  }
 }

@@ -20,11 +20,11 @@ struct ExileSale {
 enum ExileData {
     static let divine: [ExileSale] = [
             ExileSale(day: date(year: 2023, month: 4, day: 14), price: 12),
-            ExileSale(day: date(year: 2023, month: 4, day: 15), price: 11),
-            ExileSale(day: date(year: 2023, month: 4, day: 16), price: 10),
+            ExileSale(day: date(year: 2023, month: 4, day: 15), price: 10),
+            ExileSale(day: date(year: 2023, month: 4, day: 16), price: 9),
             
-            ExileSale(day: date(year: 2023, month: 4, day: 17), price: 9),
-            ExileSale(day: date(year: 2023, month: 4, day: 18), price: 9),
+            ExileSale(day: date(year: 2023, month: 4, day: 17), price: 8),
+            ExileSale(day: date(year: 2023, month: 4, day: 18), price: 7.4),
             ExileSale(day: date(year: 2023, month: 4, day: 19), price: 6.5),
             ExileSale(day: date(year: 2023, month: 4, day: 20), price: 6.2),
             ExileSale(day: date(year: 2023, month: 4, day: 21), price: 5.5),
@@ -45,6 +45,23 @@ enum ExileData {
             ExileSale(day: date(year: 2023, month: 5, day: 4), price: 2.45),
             ExileSale(day: date(year: 2023, month: 5, day: 5), price: 2.49),
             ExileSale(day: date(year: 2023, month: 5, day: 6), price: 2.5),
+            ExileSale(day: date(year: 2023, month: 5, day: 7), price: 2.27),
+            
+            ExileSale(day: date(year: 2023, month: 5, day: 8), price: 1.97),
+            ExileSale(day: date(year: 2023, month: 5, day: 9), price: 1.913),
+            ExileSale(day: date(year: 2023, month: 5, day: 10), price: 1.97),
+            ExileSale(day: date(year: 2023, month: 5, day: 11), price: 2.04),
+            ExileSale(day: date(year: 2023, month: 5, day: 12), price: 2.11),
+            ExileSale(day: date(year: 2023, month: 5, day: 13), price: 2.12),
+            ExileSale(day: date(year: 2023, month: 5, day: 14), price: 2.03),
+            
+            ExileSale(day: date(year: 2023, month: 5, day: 15), price: 2.14),
+            ExileSale(day: date(year: 2023, month: 5, day: 16), price: 2.07),
+            ExileSale(day: date(year: 2023, month: 5, day: 17), price: 2.13),
+            ExileSale(day: date(year: 2023, month: 5, day: 18), price: 2.08),
+            
+            ExileSale(day: date(year: 2023, month: 5, day: 23), price: 1.76),
+            ExileSale(day: date(year: 2023, month: 5, day: 24), price: 1.6),
         ]
     
     static let chaos: [ExileSale] = [

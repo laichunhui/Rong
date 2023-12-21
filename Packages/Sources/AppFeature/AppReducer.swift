@@ -11,9 +11,10 @@ import Home
 import Chat
 import Chart
 import Setting
+import DownloaderClient
 
 // MARK: - AppReducer
-public struct AppReducer: ReducerProtocol {
+public struct AppReducer: Reducer{
     public init() {}
 
     public enum Route: String, CaseIterable {
@@ -23,12 +24,7 @@ public struct AppReducer: ReducerProtocol {
         case setting
 
         public var isIconSystemImage: Bool {
-            switch self {
-            case .chat:
-                return false
-            default:
-                return true
-            }
+            return true
         }
 
         public var icon: String {
@@ -36,9 +32,9 @@ public struct AppReducer: ReducerProtocol {
             case .home:
                 return "house"
             case .chart:
-                return "magnifyingglass"
+                return "chart.pie"
             case .chat:
-                return "arrow.down"
+                return "bubble.left"
             case .setting:
                 return "gearshape"
             }
@@ -49,9 +45,9 @@ public struct AppReducer: ReducerProtocol {
             case .home:
                 return "house.fill"
             case .chart:
-                return "magnifyingglass.fill"
+                return "chart.pie.fill"
             case .chat:
-                return "rectangle.stack.badge.play.fill"
+                return "bubble.left.fill"
             case .setting:
                 return "gearshape.fill"
             }
@@ -71,7 +67,7 @@ public struct AppReducer: ReducerProtocol {
     }
 
     public struct State: Equatable {
-        @BindableState
+        @BindingState
         public var route = Route.home
 
         public var home = HomeReducer.State()
@@ -112,7 +108,7 @@ public struct AppReducer: ReducerProtocol {
 //    @Dependency(\.videoPlayerClient)
 //    var videoPlayerClient
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Scope(state: \.setting.userSettings, action: /Action.appDelegate) {
             AppDelegateReducer()
         }
@@ -147,5 +143,29 @@ public struct AppReducer: ReducerProtocol {
 //            }
 //
 //        Reduce(discordRichPresence)
+    }
+}
+
+extension AppReducer {
+    // swiftlint:disable cyclomatic_complexity function_body_length
+    func core(state: inout State, action: Action) -> Effect<Action> {
+        switch action {
+        case .appDelegate(.appDidEnterBackground):
+            break
+        case .appDelegate(.appWillTerminate):
+            return .run { send in
+                await send(.appDelegate(.appDidEnterBackground))
+                #if os(macOS)
+                // for macOS, save everything before fully closing app.
+                try? await mainQueue.sleep(for: 0.5)
+                await NSApp.reply(toApplicationShouldTerminate: true)
+                #endif
+            }
+        case .appDelegate(.appDidFinishLaunching):
+           break
+        default:
+            break
+        }
+        return .none
     }
 }

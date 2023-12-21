@@ -8,9 +8,8 @@
 import Foundation
 import ComposableArchitecture
 
-public struct ChatReducer: ReducerProtocol {
+public struct ChatReducer: Reducer {
     public struct State: Equatable {
-        @BindableState
         var heroPosition = 0
         public init() {}
     }
@@ -21,7 +20,7 @@ public struct ChatReducer: ReducerProtocol {
     
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
 //        BindingReducer()
         Reduce(self.core)
     }
@@ -29,7 +28,7 @@ public struct ChatReducer: ReducerProtocol {
 }
 
 extension ChatReducer {
-    func core(state: inout State, action: Action) -> EffectTask<Action> {
+    func core(state: inout State, action: Action) -> Effect<Action> {
         return .none
     }
 }

@@ -24,45 +24,45 @@ public struct AppView: View {
 
     public var body: some View {
         // MARK: Content View
-
         ZStack {
-            WithViewStore(
-                store,
-                observe: \.route
-            ) { viewStore in
-                switch viewStore.state {
-                case .home:
-                    HomeView(
-                        store: store.scope(
-                            state: \.home,
-                            action: AppReducer.Action.home
+                WithViewStore(
+                    store,
+                    observe: \.route
+                ) { viewStore in
+                    switch viewStore.state {
+                    case .home:
+                        HomeView(
+                            store: store.scope(
+                                state: \.home,
+                                action: AppReducer.Action.home
+                            )
                         )
-                    )
-
-                case .chart:
-                    ChartView(
-                        store: store.scope(
-                            state: \.chart,
-                            action: AppReducer.Action.chart
+                        
+                    case .chart:
+                        ChartView(
+                            store: store.scope(
+                                state: \.chart,
+                                action: AppReducer.Action.chart
+                            )
                         )
-                    )
-
-                case .chat:
-                    ChatView(
-                        store: store.scope(
-                            state: \.chat,
-                            action: AppReducer.Action.chat
+                        
+                    case .chat:
+                        ChatView(
+                            store: store.scope(
+                                state: \.chat,
+                                action: AppReducer.Action.chat
+                            )
                         )
-                    )
-                case .setting:
-                    SettingView(
-                        store: store.scope(
-                            state: \.setting,
-                            action: AppReducer.Action.setting
+                    case .setting:
+                        SettingView(
+                            store: store.scope(
+                                state: \.setting,
+                                action: AppReducer.Action.setting
+                            )
                         )
-                    )
+                    }
                 }
-            }
+            
         }
         .frame(
             maxWidth: .infinity,
@@ -120,7 +120,7 @@ struct AppView_Previews: PreviewProvider {
         AppView(
             store: .init(
                 initialState: .init(),
-                reducer: AppReducer()
+                reducer: { AppReducer() }
             )
         )
     }

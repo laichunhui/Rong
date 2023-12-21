@@ -8,9 +8,8 @@
 import Foundation
 import ComposableArchitecture
 
-public struct SettingReducer: ReducerProtocol {
+public struct SettingReducer: Reducer {
     public struct State: Equatable {
-        @BindableState
         var heroPosition = 0
         
         @BindingState
@@ -27,7 +26,7 @@ public struct SettingReducer: ReducerProtocol {
     
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
 //        BindingReducer()
         Reduce(self.core)
     }
@@ -35,7 +34,7 @@ public struct SettingReducer: ReducerProtocol {
 }
 
 extension SettingReducer {
-    func core(state: inout State, action: Action) -> EffectTask<Action> {
+    func core(state: inout State, action: Action) -> Effect<Action> {
         return .none
     }
 }

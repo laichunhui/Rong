@@ -29,5 +29,10 @@
 		<string>audio</string>
 		<string>fetch</string>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>launch_bg</string>
+	</dict>
 </dict>
 </plist>

@@ -14,7 +14,7 @@ import UIKit
 
 let store = Store(
     initialState: AppReducer.State(),
-    reducer: AppReducer()
+    reducer: { AppReducer() }
 )
 
 @UIApplicationMain
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _: UIApplication,
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        ViewStore(store).send(.appDelegate(.appDidFinishLaunching))
+        store.send(.appDelegate(.appDidFinishLaunching))
         return true
     }
 

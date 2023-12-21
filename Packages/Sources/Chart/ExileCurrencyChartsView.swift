@@ -147,7 +147,7 @@ struct ExileCurrencyChartsView: View {
                         }
                         .accessibilityElement(children: .combine)
                         .accessibilityHidden(isOverview)
-                        .frame(width: boxWidth, alignment: .leading)
+                        .frame(width: boxWidth, height: 200, alignment: .leading)
                         .background {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 8)
