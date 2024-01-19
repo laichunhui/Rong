@@ -89,7 +89,7 @@ extension HomeReducer {
             }
             return .none
         case .onCalculatorTapped:
-            state.path.append(.calculator(CalculatorReducer.State()))
+            state.path.append(Router.State.calculator(CalculatorReducer.State()))
         default:
             break
         }

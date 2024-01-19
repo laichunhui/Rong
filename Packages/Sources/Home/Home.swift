@@ -35,52 +35,47 @@ public struct HomeView: View {
     
     public var body: some View {
         NavigationStackStore(self.store.scope(state: \.path, action: { .path($0) })) {
-            NavigationLink(state: Router.State.calculator(CalculatorReducer.State())) {
-              Text("Push feature")
-            }
-        } destination: { store in
-            Form {
-              Section {
-                NavigationLink(state: CalculatorReducer.State()) {
-                  Text("Push feature")
-                }
-              }
-            }
-        }
+//            NavigationLink(state: Router.State.calculator(CalculatorReducer.State())) {
+//              Text("Push feature")
+//            }
+//        } destination: { store in
+//            Text("Push feature me")
+//        }
 
-//            WithViewStore(
-//                store,
-//                observe: ViewState.init
-//            ) { viewStore in
+            WithViewStore(
+                store,
+                observe: ViewState.init
+            ) { viewStore in
 //                StackNavigation(title: "Path Of Free") {
-//                    ZStack {
-//                        ScrollView(.vertical, showsIndicators: false) {
-//                            ExtraTopSafeAreaInset()
-//                            
-//                            editHeaderView
-//                            
-//                            LazyVStack(spacing: 24) {
-//                                aimItemsRepresentable(title: "Last Watched", items: viewStore.aimList)
-//                            }
-//                            .placeholder(
-//                                active: viewStore.isLoading,
-//                                duration: 2.0
-//                            )
-//                            
-//                            ExtraBottomSafeAreaInset()
-//                            Spacer(minLength: 32)
-//                        }
-//                    }
-//                    .transition(.opacity)
-//                    .animation(
-//                        .easeInOut(duration: 0.5),
-//                        value: viewStore.isLoading
-//                    )
-//                    .disabled(viewStore.isLoading)
-//                    .onAppear {
-//                        viewStore.send(.onAppear)
-//                    }
-//                }
+                    ZStack {
+                        ScrollView(.vertical, showsIndicators: false) {
+                            ExtraTopSafeAreaInset()
+                            
+                            editHeaderView
+                            
+                            LazyVStack(spacing: 24) {
+                                aimItemsRepresentable(title: "Last Watched", items: viewStore.aimList)
+                            }
+                            .placeholder(
+                                active: viewStore.isLoading,
+                                duration: 2.0
+                            )
+                            
+                            ExtraBottomSafeAreaInset()
+                            Spacer(minLength: 32)
+                        }
+                    }
+                    .transition(.opacity)
+                    .animation(
+                        .easeInOut(duration: 0.5),
+                        value: viewStore.isLoading
+                    )
+                    .disabled(viewStore.isLoading)
+                    .onAppear {
+                        viewStore.send(.onAppear)
+                    }
+                    
+                }
 //            buttons: {
 //                //                NavigationLink(value: 1) {
 //                //                    Image(systemSymbol: .keyboardOnehandedRight)
@@ -101,19 +96,21 @@ public struct HomeView: View {
 //                }
 //                .buttonStyle(.plain)
 //            }
-//            .frame(
-//                maxWidth: .infinity,
-//                maxHeight: .infinity
-//            )
-//            .background(backgroundView)
-//                //            .navigationDestination(
-//                //              store: self.store.scope(
-//                //                state: \.$navigationDestination, action: { .navigationDestination($0) })
-//                //            ) {
-//                //              DestinationView(store: $0)
-//                //            }
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity
+            )
+            .background(backgroundView)
+                //            .navigationDestination(
+                //              store: self.store.scope(
+                //                state: \.$navigationDestination, action: { .navigationDestination($0) })
+                //            ) {
+                //              DestinationView(store: $0)
+                //            }
 //            }
-        
+        } destination: { store in
+            Text("Push feature me")
+        }
     }
 }
 
